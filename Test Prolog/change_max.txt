@@ -1,0 +1,24 @@
+pb([],[],[]).
+pb([],B,[B]).
+pb(A,[],A).
+
+pb([H|T],ReplaceList,[H|TR]):-
+    \+ este_maxim(H,[H|T]),
+    pb(T,ReplaceList,TR).
+
+pb([H|T],ReplaceList, [ReplaceList|T]):-
+    este_maxim(H,[H|T]),
+    !.
+    
+    
+    
+    
+este_maxim(Numar, Lista) :-
+    max_lista(Lista, Max), 
+    Numar =:= Max.         
+
+    
+max_lista([X], X).  
+max_lista([H|T], Max) :-
+    max_lista(T, TempMax), 
+    (H > TempMax -> Max = H ; Max = TempMax).  

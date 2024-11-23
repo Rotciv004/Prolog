@@ -1,0 +1,25 @@
+number_atom([],[]).
+
+number_atom([H|T], [[H|Count]|TR]):-
+    count_occurrences(H,[H|T],Count),
+    delete_elem(H,[H|T],NewList),
+    number_atom(NewList,TR).
+
+
+count_occurrences(_,[],0).
+
+count_occurrences(X,[X|T],Count):-
+    count_occurrences(X,T,NewCount),
+    Count is NewCount + 1.
+
+count_occurrences(X,[_|T],Count):-
+    count_occurrences(X,T,Count).
+
+delete_elem(_,[],[]).
+
+delete_elem(X, [X|T], List):-
+    delete_elem(X,T,List).
+
+delete_elem(X, [H|T], [H|List]):-
+    X \= H,
+    delete_elem(X,T,List).

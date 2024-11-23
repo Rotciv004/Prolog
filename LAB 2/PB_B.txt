@@ -1,0 +1,15 @@
+b. Write a predicate to add value 1 after every even element from a list.
+
+add_one_after_even([], []).  % Când lista este vidă, nu mai adăugăm nimic.
+add_one_after_even([H|T], [H,1|R]) :- 
+    0 is H mod 2,            % Dacă H este par, adăugăm 1 după el.
+    add_one_after_even(T, R).
+add_one_after_even([H|T], [H|R]) :- 
+    1 is H mod 2,            % Dacă H este impar, nu adăugăm 1 după el.
+    add_one_after_even(T, R).
+
+
+
+
+?- add_one_after_even([1, 2, 3, 4], L).
+L = [1, 2, 1, 3, 4, 1].

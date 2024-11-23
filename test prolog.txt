@@ -1,0 +1,58 @@
+% cmmdc(i,i,o).
+% cmmdc(NR1,NR2) = { NR1, NR2 = 0
+% 				   { NR1 mod NR2 U cmmdc(NR2, NR1 mod NR2), if NR2 > 0
+cmmdc(X , 0 , X) :- 
+    X > 0, 
+    !.
+
+cmmdc(X , Y , R) :-
+    Y > 0,
+    Rest is X mod Y,
+    cmmdc(Y , Rest , R).
+
+%cmc(i,i,o).
+%cmc(NR1,NR2) = { 0, if NR2 = 0 or NR1 = 0
+%               { (NR1 * NR2) / cmmdc(NR1,NR2), otherweise 
+cmc(_ , 0 , 0) :- 
+    !. 
+
+cmc(0 , _ , 0) :- 
+    !. 
+
+cmc(X , Y , R) :-
+    cmmdc(X , Y , CMDC),
+    R is (X * Y) // CMDC.
+
+% remove_zero(i,o).
+% remove_zero(l1l2...ln) = { empty_list , if List is empty
+%                          { remove_zero(l2l3...ln), if l1 = 0
+%						   { l1 U remove_zero(l2l3...ln), if l1 != 0
+remove_zeros([] , []).
+
+remove_zeros([0|T] , R) :- 
+    remove_zeros(T , R), 
+    !.
+
+remove_zeros([H|T] , [H|R]) :- 
+    H \= 0, 
+    remove_zeros(T , R).
+
+
+
+% cmc_list(i,o).
+%cmc_list(l1l2...ln) = { l1 , if len(List) = 1
+%     				   { cmc(l1,l2) U cmc_list(cm)
+cmc_list([X] , X) :- 
+    !.
+
+cmc_list([X , Y | Rest] , R) :-
+    cmc(X , Y , TempCMC),     
+    cmc_list([TempCMC | Rest] , R). 
+
+
+%cmc_list_safe(i,o).
+%cmc_list_safe(l1l2...ln) = { 0, if List without 0 elemetns is empty
+%                           { cmc_list(l1l2...ln), otherwise
+cmc_list_safe(List , R) :-
+    remove_zeros(List , CleanList), 
+    (CleanList = [] -> R = 0 ; cmc_list(CleanList , R)). 

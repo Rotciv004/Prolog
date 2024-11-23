@@ -1,0 +1,32 @@
+%strict_ascending(i,o).
+%strict_ascending(GL-given_list, RL-result_list).
+%
+%strict_ascending(l1l2...ln,[[f1,f2...fn]p2...pn]) = { empty_list, nr_elems = 0 or nr_elems = 1
+%							      {  find_ascending(l2l3...ln) and l1,l2 U strict_ascending(l2l3...ln), l1 < l2
+
+strict_ascending([], []).
+strict_ascending([_], []).
+
+strict_ascending([X,Y|Tail], [[X,Y|AscSubList]|OtherSublists]) :-
+    X < Y, 
+    find_ascending([Y|Tail], AscSubList),
+    strict_ascending([Y|Tail], OtherSublists). 
+
+strict_ascending([_|Tail], OtherSublists) :-
+    strict_ascending(Tail, OtherSublists). 
+
+
+%find_ascending(i,o).
+%find_ascending(GL-given_list, RL- result_list).
+%
+%find_ascending(l1l2...ln) = { empty_list, nr_elems = 1 or l1 >= l2
+%							 { l2 U find_ascending(l2l3...ln), l1 < l2
+
+find_ascending([X,Y|Tail], [Y|AscSubList]) :-
+    X < Y,
+    find_ascending([Y|Tail], AscSubList).
+
+find_ascending([X,Y|_], []) :- X >= Y.
+find_ascending([_], []).
+
+%strict_ascending([1, 2, 2, 3, 4, 1, 2, 5, 6, 3, 4, 7], Sublists).

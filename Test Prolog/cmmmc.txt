@@ -1,0 +1,16 @@
+cmmdc(X, 0, X) :- X > 0, !.
+cmmdc(X, Y, R) :-
+    Y > 0,
+    Rest is X mod Y,
+    cmmdc(Y, Rest, R).
+
+cmc(X, Y, R) :-
+    cmmdc(X, Y, CMDC),
+    R is (X * Y) // CMDC.
+
+
+cmc_lista([X], X) :- !. 
+
+cmc_lista([X, Y | Rest], R) :-
+    cmc(X, Y, TempCMC),     
+    cmc_lista([TempCMC | Rest], R). 

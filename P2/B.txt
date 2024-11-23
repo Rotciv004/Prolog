@@ -1,0 +1,44 @@
+% list_to_number(i,o).
+list_to_number([], 0).
+list_to_number(List, Number) :-
+    list_to_number_helper(List, 0, Number).
+
+% list_to_number_helper(i,i,o).
+list_to_number_helper([], Aux, Aux).
+list_to_number_helper([H|T], Aux, Number) :-
+    NewAux is Aux * 10 + H,
+    list_to_number_helper(T, NewAux, Number).
+
+% number_to_list(i,o).
+number_to_list(0, [0]).
+number_to_list(Number, List) :-
+    number_to_list_helper(Number, [], List).
+
+% number_to_list_helper(i,i,o)
+number_to_list_helper(0, Aux, Aux).
+number_to_list_helper(Number, Aux, List) :-
+    Number > 0,
+    Digit is Number mod 10,
+    NewNumber is Number // 10,
+    number_to_list_helper(NewNumber, [Digit|Aux], List).
+
+% sum_sublist(i,0)
+sum_sublists(List, SumList) :-
+    sum_sublists_helper(List, 0, Sum),
+    number_to_list(Sum, SumList).
+
+
+
+sum_sublists_helper([], Acc, Acc).
+sum_sublists_helper([H|T], Acc, Sum) :-
+    is_list(H),                
+    list_to_number(H, Num),    
+    NewAcc is Acc + Num,       
+    sum_sublists_helper(T, NewAcc, Sum).
+
+sum_sublists_helper([H|T], Acc, Sum) :-
+    \+ is_list(H),             
+    sum_sublists_helper(T, Acc, Sum).
+
+
+sum_sublists([[1, 2, 3], [4, 5, 6], [7, 8], 9, [1, 0, 0]], SumList).

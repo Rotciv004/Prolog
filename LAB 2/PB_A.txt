@@ -1,0 +1,16 @@
+a. Write a predicate to determine the difference of two sets
+
+set_difference([], _, []).  % Diferența dintre o mulțime vidă și oricare altă mulțime este vidă.
+set_difference([H|T], B, D) :- 
+    member(H, B),          % Dacă H este în B, nu îl adăugăm în diferență.
+    set_difference(T, B, D).
+set_difference([H|T], B, [H|D]) :- 
+    \+ member(H, B),       % Dacă H nu este în B, îl adăugăm în diferență.
+    set_difference(T, B, D).
+
+
+
+
+
+?- set_difference([1, 2, 3, 4], [2, 4], D).
+D = [1, 3].

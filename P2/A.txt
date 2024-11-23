@@ -1,0 +1,81 @@
+% list_to_number(i,o).
+list_to_number([], 0).
+list_to_number(List, Number) :-
+    list_to_number_helper(List, 0, Number).
+
+% list_to_number_helper(i,i,o).
+list_to_number_helper([], Aux, Aux).
+list_to_number_helper([H|T], Aux, Number) :-
+    NewAux is Aux * 10 + H,
+    list_to_number_helper(T, NewAux, Number).
+
+% number_to_list(i,o).
+number_to_list(0, [0]).
+number_to_list(Number, List) :-
+    number_to_list_helper(Number, [], List).
+
+% number_to_list_helper(i,i,o)
+number_to_list_helper(0, Aux, Aux).
+number_to_list_helper(Number, Aux, List) :-
+    Number > 0,
+    Digit is Number mod 10,
+    NewNumber is Number // 10,
+    number_to_list_helper(NewNumber, [Digit|Aux], List).
+
+
+% sum_list(i,i,o).
+sum_list([], [], []).
+sum_list(List1, [], List1).
+sum_list([], List2, List2).
+sum_list(List1, List2, RezList) :-
+    list_to_number(List1, Number1),
+    list_to_number(List2, Number2),
+    Sum is Number1 + Number2,
+    number_to_list(Sum, RezList).
+
+
+
+?- sum_list_numbers([1, 2, 3], [4, 7], SumList).
+SumList = [1, 7, 0].
+
+
+
+
+
+
+
+% sum_list(i,i,o).
+sum_list(List1, List2, Rezultat) :-
+    reverse(List1, RevList1),
+    reverse(List2, RevList2),
+    sum_list(RevList1, RevList2, 0, RevRezultat),
+    reverse(RevRezultat, Rezultat).
+
+%sum_list(i,i,i,o).
+sum_list([], [], 0, []).
+
+sum_list([], [H2|T2], Carry, [H3|T3]) :-
+    Sum is H2 + Carry,
+    H3 is Sum mod 10,
+    NewCarry is Sum // 10,
+    sum_list([], T2, NewCarry, T3).
+
+sum_list([H1|T1], [], Carry, [H3|T3]) :-
+    Sum is H1 + Carry,
+    H3 is Sum mod 10,
+    NewCarry is Sum // 10,
+    sum_list(T1, [], NewCarry, T3).
+
+sum_list([H1|T1], [H2|T2], Carry, [H3|T3]) :-
+    Sum is H1 + H2 + Carry,
+    H3 is Sum mod 10,
+    NewCarry is Sum // 10,
+    sum_list(T1, T2, NewCarry, T3).
+
+
+sum_list([], [], Carry, [Carry]) :-
+    Carry > 0.
+
+
+
+

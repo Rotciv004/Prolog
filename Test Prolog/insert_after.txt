@@ -1,0 +1,6 @@
+insert([H|T],INS,VAL,[H|TR]):-
+    INS > 1,
+    NINS is INS - 1,
+    insert(T,NINS,VAL,TR).
+
+insert([H|T], 1, VAL, [H,VAL|T]).
